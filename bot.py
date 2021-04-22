@@ -30,7 +30,7 @@ firebase_admin.initialize_app(cred)
 
 intents = discord.Intents.default()
 intents.members = True
-bot = commands.Bot(command_prefix=os.getenv("PREFIX"), intents=intents, case_insensitive=True, help_command=None, allowed_mentions=discord.AllowedMentions(replied_user=False))
+bot = commands.Bot(command_prefix=os.getenv("PREFIX"), intents=intents, case_insensitive=True, allowed_mentions=discord.AllowedMentions(replied_user=False))
 
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
@@ -38,7 +38,9 @@ logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 initial_cogs = [
     "jishaku",
-    "cogs.error_handler"
+    "cogs.error_handler",
+    "cogs.multi_ranking",
+    "cogs.profile"
 ]
 
 for cog in initial_cogs:

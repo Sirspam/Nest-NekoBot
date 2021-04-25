@@ -3,8 +3,21 @@ import logging
 import asyncio
 from discord.ext import commands
 from firebase_admin import firestore
+from os import getcwd
+from random import randint
+
 
 dab = firestore.client()
+badge_directory = getcwd()+"//images//badges"
+
+badge_colours = {    
+    "Bronze":"cd7f32",
+    "Silver":"949494",
+    "Gold":"e8bd12",
+    "Platinum":"c0c0c0",
+    "Diamond":"00ddff",
+    "Master":"9600ff",
+    }
 
 
 class Profile(commands.Cog):
@@ -19,21 +32,32 @@ class Profile(commands.Cog):
         if str(ctx.author.id) not in dab.collection("users").document("collectionlist").get().get("array"):
             return await ctx.send("You haven't registered for a profile!")
         ref = dab.collection("users").document(str(ctx.author.id)).get()
-        embed = discord.Embed(
-            title=ctx.author.name,
-            colour=discord.Colour.random())
-        embed.add_field(name="MultiPoints", value=ref.get("MP"), inline=False)
-        embed.add_field(name="Rank", value=ref.get("rank"), inline=False)
+        rank = ref.get("rank")
         wins = ref.get("wins")
         loses = ref.get("loses")
+        if rank == "Master":
+            if randint(0,100) == 0:
+                badge_path = badge_directory+"//Crime.png"
+            else:
+                badge_path = badge_directory+"//Master.png"
+        else:
+            badge_path = badge_directory+"//"+rank+".png"
+        embed = discord.Embed(
+            description="",
+            colour=await commands.ColourConverter().convert(ctx, "0x"+badge_colours[rank])
+            )
+        embed.set_author(name=ctx.author.name,icon_url=str(ctx.author.avatar_url))
+        embed.add_field(name="MultiPoints", value=ref.get("MP"), inline=False)
+        embed.add_field(name="Rank", value=rank, inline=False)
         embed.add_field(name="Wins", value=wins, inline=True)
         embed.add_field(name="Loses", value=loses, inline=True)
         try:
             embed.add_field(name="WL Ratio", value=round(wins/loses,2), inline=True)
         except ZeroDivisionError:
             embed.add_field(name="WL Ratio", value=0, inline=True)
-        embed.set_thumbnail(url=ctx.author.avatar_url)
-        await ctx.reply(embed=embed)
+        file = discord.File(badge_path, filename="image.png")
+        embed.set_thumbnail(url="attachment://image.png")
+        await ctx.send(file=file, embed=embed)
 
     @commands.command(aliases=["link","add"])
     async def register(self, ctx):

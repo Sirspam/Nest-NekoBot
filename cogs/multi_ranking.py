@@ -21,6 +21,9 @@ class MultiRanking(commands.Cog):
         if ctx.author == member:
             await ctx.send("You can't start a match with yourself!")
             return logging.info("author equal to member, match cancelled")
+        if dab.collection("users").document(str(ctx.author.id)).get().get("modded") is not dab.collection("users").document(str(member.id)).get().get("modded"):
+            await ctx.send("You can't start a match with someone on a different platform to you!")
+            return logging.info("modded bools differeated, match cancelled")
         if ctx.author.id in matches.keys():
             await ctx.send("You've already got an open match!")
             return logging.info("author already has an open match, match cancelled")

@@ -108,6 +108,7 @@ class Profile(commands.Cog):
         col_ref.append(str(ctx.author.id))
         col_ref.sort()
         dab.collection("users").document("collectionlist").update({"array": col_ref})
+        await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835882077298622465"))
         await ctx.reply(f"{ctx.author.name} has sucessfully been added to the database!")
         logging.info(f"{ctx.author.name} has sucessfully been added to the database")
 

@@ -27,10 +27,17 @@ cred = credentials.Certificate({
 firebase_admin.initialize_app(cred)
 
 
+class EmbeddedHelp(commands.MinimalHelpCommand):
+    async def send_pages(self):
+        destination = self.get_destination()
+        for page in self.paginator.pages:
+            emby = discord.Embed(description=page)
+            await destination.send(embed=emby)
+
 
 intents = discord.Intents.default()
 intents.members = True
-bot = commands.Bot(command_prefix=os.getenv("PREFIX"), intents=intents, case_insensitive=True, allowed_mentions=discord.AllowedMentions(replied_user=False))
+bot = commands.Bot(command_prefix=os.getenv("PREFIX"), intents=intents, help_command=EmbeddedHelp(), case_insensitive=True, allowed_mentions=discord.AllowedMentions(replied_user=False))
 
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)

@@ -85,7 +85,7 @@ class Profile(commands.Cog):
             except asyncio.TimeoutError:
                 return await ctx.send("You didn't respond in time!")
             if str(reaction.emoji) == "✅":
-                await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835212978508529675"))
+                await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "792949628940451851"))
         elif str(reaction.emoji) == "✅":
             modded = False
             message = await ctx.send("Do you want to be pinged whenever another non modded player wants to play?\nKeep in mind you may be pinged frequently!")
@@ -96,7 +96,7 @@ class Profile(commands.Cog):
             except asyncio.TimeoutError:
                 return await ctx.send("You didn't respond in time!")
             if str(reaction.emoji) == "✅":
-                await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835213010980438016"))
+                await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "792949630500470804"))
         doc_ref = dab.collection("users").document(str(ctx.author.id))
         doc_ref.set({
             "MP": int(0),

@@ -87,13 +87,19 @@ class MultiRanking(commands.Cog):
             return await ctx.send("Invalid total! The total wins should be 3! Please repeat the match end process")
         scores.sort(reverse=True)
         await ctx.send(f"{scores[0][1].mention} wins and gains {scores[0][0]}MP! {scores[1][1].mention} loses {scores[0][0]}MP!")
-        MultiPoints = dab.collection("users").document(str(scores[0][1].id)).get().get("MP") # I hate this block of code
-        dab.collection("users").document(str(scores[0][1].id)).update({"MP": (int(MultiPoints)+scores[0][0])})
-        MultiPoints = dab.collection("users").document(str(scores[1][1].id)).get().get("MP")
-        MPLoss = int(MultiPoints)-scores[0][0]
+        win_rep = dab.collection("users").document(str(scores[0][1].id)).get() # I hate this block of code
+        loss_rep = dab.collection("users").document(str(scores[1][1].id)).get()
+        dab.collection("users").document(str(scores[0][1].id)).update({
+            "MP": (int(win_rep.get("MP"))+scores[0][0]),
+            "wins": (win_rep.get("wins")+1)
+        })
+        MPLoss = int(loss_rep.get("MP"))-scores[0][0]
         if MPLoss < 0:
             MPLoss = 0
-        dab.collection("users").document(str(scores[1][1].id)).update({"MP": MPLoss})
+        dab.collection("users").document(str(scores[1][1].id)).update({
+            "MP": MPLoss,
+            "loses": (loss_rep.get("loses")+1)    
+        })
 
     @commands.command()
     @commands.has_permissions(administrator=True)

@@ -83,7 +83,7 @@ class MultiRanking(commands.Cog):
                 if str(reaction.emoji) == "3️⃣":
                     total = total + 3
                     scores.append([3, x])
-        if total > 3:
+        if total != 3:
             return await ctx.send("Invalid total! The total wins should be 3! Please repeat the match end process")
         scores.sort(reverse=True)
         await ctx.send(f"{scores[0][1].mention} wins and gains {scores[0][0]}MP! {scores[1][1].mention} loses {scores[0][0]}MP!")

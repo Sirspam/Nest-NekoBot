@@ -100,6 +100,7 @@ class MultiRanking(commands.Cog):
             "MP": MPLoss,
             "loses": (loss_rep.get("loses")+1)    
         })
+        del matches[ctx.author.id]
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -107,6 +108,12 @@ class MultiRanking(commands.Cog):
         logging.info(f"MP set invoked by {ctx.author}, setting {member.name} MP to {value}")
         dab.collection("users").document(str(member.id)).update({"MP": value})
         await ranking_roles.assign_rank(ctx)
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def matches(self, ctx):
+        global matches
+        await ctx.send(matches)
 
     """@commands.command() # Leaving this all here in case I need it in the future :)
     async def matchstart(self, ctx, *members:discord.Member):

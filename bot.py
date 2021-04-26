@@ -31,7 +31,7 @@ class EmbeddedHelp(commands.MinimalHelpCommand):
     async def send_pages(self):
         destination = self.get_destination()
         for page in self.paginator.pages:
-            emby = discord.Embed(description=page)
+            emby = discord.Embed(description=page, colour=0xfc0000)
             await destination.send(embed=emby)
 
 
@@ -46,6 +46,7 @@ logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 initial_cogs = [
     "jishaku",
     "cogs.error_handler",
+    "cogs.general",
     "cogs.multi_ranking",
     "cogs.profile"
 ]

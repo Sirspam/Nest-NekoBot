@@ -115,6 +115,7 @@ class MultiRanking(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def MPset(self, ctx, member:discord.Member, value):
         logging.info(f"MP set invoked by {ctx.author}, setting {member.name} MP to {value}")
+        ctx.author = member
         dab.collection("users").document(str(member.id)).update({"MP": value})
         await ranking_roles.assign_rank(ctx)
 

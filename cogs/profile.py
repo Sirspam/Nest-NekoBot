@@ -25,7 +25,7 @@ class Profile(commands.Cog):
         self.bot = bot
 
 
-    @commands.command(aliases=["p"])
+    @commands.command(aliases=["p"], help="Posts the profile for the author or mentioned user")
     async def profile(self, ctx, user:discord.Member=None):
         if user is not None:
             ctx.author = user
@@ -59,7 +59,7 @@ class Profile(commands.Cog):
         embed.set_thumbnail(url="attachment://image.png")
         await ctx.send(file=file, embed=embed)
 
-    @commands.command(aliases=["link","add"])
+    @commands.command(aliases=["link","add"], help="Registers the author to the database")
     async def register(self, ctx):
         logging.info(f"Recieved register {ctx.author.id}")
         col_ref = dab.collection('users').document('collectionlist').get().get('array')
@@ -112,7 +112,7 @@ class Profile(commands.Cog):
         await ctx.reply(f"{ctx.author.name} has sucessfully been added to the database!")
         logging.info(f"{ctx.author.name} has sucessfully been added to the database")
 
-    @commands.command(aliases=["register'nt"])
+    @commands.command(aliases=["register'nt"], help="Removes the author from the database")
     async def remove(self, ctx):
         logging.info(f"remove raised by {ctx.author.name}")
         col_ref = dab.collection("users").document("collectionlist").get().get("array")

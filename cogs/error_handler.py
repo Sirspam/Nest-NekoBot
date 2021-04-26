@@ -17,7 +17,7 @@ class ErrorHandler(commands.Cog):
 
         elif isinstance(error, commands.CommandNotFound):
             logging.info("CommandNotFound handler ran")
-            return await ctx.send("Command not found")
+            return await ctx.send("Command not found", delete_after=20)
 
         elif isinstance(error, commands.BotMissingPermissions):
             logging.info(f"BotMissingPermissions handler ran - {error.missing_perms}")

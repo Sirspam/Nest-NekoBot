@@ -16,9 +16,9 @@ rankings = {
 async def determine_rank(ctx):
     logging.info("determine_rank invoked")
     dab = firestore.client()
-    MP = int(dab.collection("users").document(str(ctx.author.id)).get().get("MP"))
+    mp = int(dab.collection("users").document(str(ctx.author.id)).get().get("MP"))
     for x in rankings:
-        if rankings[x][0] <= MP <= rankings[x][1]:
+        if rankings[x][0] <= mp <= rankings[x][1]:
             logging.info(f"returned {x}")
             return x
 

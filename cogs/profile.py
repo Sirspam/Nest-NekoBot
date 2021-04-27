@@ -66,7 +66,7 @@ class Profile(commands.Cog):
         if str(ctx.author.id) in col_ref:
             await ctx.reply("You're already in the database!")
             return logging.info("User already in database")
-        message = await ctx.reply("Do you play on __non modded__ quest?")
+        message = await ctx.reply("Do you play __vanilla quest__ with no mods?")
         await message.add_reaction("✅")
         await message.add_reaction("❌")
         def check(reaction, user):
@@ -109,7 +109,7 @@ class Profile(commands.Cog):
         col_ref.sort()
         dab.collection("users").document("collectionlist").update({"array": col_ref})
         await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835882077298622465"))
-        await ctx.reply(f"{ctx.author.name} has successfully been added to the database!")
+        await ctx.send(f"{ctx.author.name} has successfully registered!")
         logging.info(f"{ctx.author.name} has successfully been added to the database")
 
     @commands.command(aliases=["register'nt"], help="Removes the author from the database")

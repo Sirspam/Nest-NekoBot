@@ -111,6 +111,15 @@ class MultiRanking(commands.Cog):
         if str(reaction.emoji) == "❌":
             return await ctx.send(f"{scores[1][1].name} has declined this score. please redo the matchend process or contact a moderator")
 
+    @commands.command(help="Posts the requirements for each rank")
+    async def rankings(self, ctx):
+        logging.info("rankings invoked")
+        await ctx.send(embed=discord.Embed(
+            title="MP Ranks",
+            description=await ranking_roles.rank_list(),
+            colour=0xfc0000))
+        logging.info("rankings ended")
+    
     @commands.command(help="Sets a user's MP value to the specified value")
     @commands.has_permissions(administrator=True)
     async def MPset(self, ctx, member:discord.Member, value):

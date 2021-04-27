@@ -35,3 +35,9 @@ async def assign_rank(ctx):
     await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, rankings[new_rank][2]))
     dab.collection("users").document(str(ctx.author.id)).update({"rank": new_rank})
 
+async def rank_list():
+    logging.info("rank_list inoked")
+    message = str()
+    for x in rankings:
+        message = message+f"**{x}**: {rankings[x][0]} - {rankings[x][1]}\n"
+    return message

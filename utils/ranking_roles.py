@@ -4,12 +4,13 @@ from firebase_admin import firestore
 
 
 rankings = {
-    "Bronze": (0,9,"835882077298622465"),
-    "Silver": (10,25,"835882144169590814"),
-    "Gold": (26,45,"835882146048376853"),
-    "Platinum": (46,60,"835882148539924490"),
-    "Diamond": (61,75,"835882150909050900"),
-    "Master": (76,float("inf"),"835882152490434560"),
+    #Name: min MP, max MP, role ID, emote ID
+    "Bronze": (0,9,"835882077298622465","<:Bronze:836531324348530699>"),
+    "Silver": (10,25,"835882144169590814","<:Silver:836531344963272744>"),
+    "Gold": (26,45,"835882146048376853","<:Gold:836531357646716928>"),
+    "Platinum": (46,60,"835882148539924490","<:Platinum:836531372436619274>"),
+    "Diamond": (61,75,"835882150909050900","<:Diamond:836531381592129537>"),
+    "Master": (76,float("inf"),"835882152490434560","<:Master:836531391423709195>"),
 }
 
 
@@ -39,5 +40,8 @@ async def rank_list():
     logging.info("rank_list inoked")
     message = str()
     for x in rankings:
-        message = message+f"**{x}**: {rankings[x][0]} - {rankings[x][1]}\n"
+        if rankings[x][1] == float("inf"):
+            message = message+f"{rankings[x][3]} **{x}**: {rankings[x][0]}+"
+        else:
+            message = message+f"{rankings[x][3]} **{x}**: {rankings[x][0]} - {rankings[x][1]}\n"
     return message

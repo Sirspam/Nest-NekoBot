@@ -9,7 +9,7 @@ leaving this here in case I need to use it in the future, because I think it's p
             return await ctx.send("You've already got an open match!")
         players = list()
         y = str()
-        col_ref = dab.collection("users").document("collectionlist").get().get('array')
+        col_ref = dab.collection("users").document("collectionlist").get().get('users')
         for x in members:
             if str(x.id) not in col_ref:
                 return await ctx.send(f"{x.name} isn't registered!")

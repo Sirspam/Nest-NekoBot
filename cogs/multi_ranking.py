@@ -28,7 +28,7 @@ class MultiRanking(commands.Cog):
         if ctx.author.id in matches.keys():
             await ctx.send("You've already got an open match!")
             return logging.info("author already has an open match, match cancelled")
-        col_ref = dab.collection("users").document("collectionlist").get().get('array')
+        col_ref = dab.collection("users").document("collectionlist").get().get('users')
         if str(member.id) not in col_ref:
             return await ctx.send(f"{member.name} isn't registered!")
         if str(ctx.author.id) not in col_ref:

@@ -29,7 +29,7 @@ class Profile(commands.Cog):
     async def profile(self, ctx, user:discord.Member=None):
         if user is not None:
             ctx.author = user
-        if str(ctx.author.id) not in dab.collection("users").document("collectionlist").get().get("array"):
+        if str(ctx.author.id) not in dab.collection("users").document("collectionlist").get().get("users"):
             return await ctx.send("You haven't registered for a profile!")
         ref = dab.collection("users").document(str(ctx.author.id)).get()
         rank = ref.get("rank")
@@ -44,7 +44,8 @@ class Profile(commands.Cog):
             badge_path = badge_directory+"//"+rank+".png"
         embed = discord.Embed(
             description="",
-            colour=await commands.ColourConverter().convert(ctx, "0x"+badge_colours[rank])
+            colour=await commands.ColourConverter().convert(ctx, "0x"+badge_colours[rank]),
+            timestamp=ctx.message.created_at
             )
         embed.set_author(name=ctx.author.name,icon_url=str(ctx.author.avatar_url))
         embed.add_field(name="MultiPoints", value=ref.get("MP"), inline=False)
@@ -62,7 +63,7 @@ class Profile(commands.Cog):
     @commands.command(aliases=["link","add"], help="Registers the author to the database")
     async def register(self, ctx):
         logging.info(f"Recieved register {ctx.author.id}")
-        col_ref = dab.collection('users').document('collectionlist').get().get('array')
+        col_ref = dab.collection('users').document('collectionlist').get().get('users')
         if str(ctx.author.id) in col_ref:
             await ctx.reply("You're already in the database!")
             return logging.info("User already in database")
@@ -107,7 +108,7 @@ class Profile(commands.Cog):
         })
         col_ref.append(str(ctx.author.id))
         col_ref.sort()
-        dab.collection("users").document("collectionlist").update({"array": col_ref})
+        dab.collection("users").document("collectionlist").update({"users": col_ref})
         await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835882077298622465"))
         await ctx.send(f"{ctx.author.name} has successfully registered!")
         logging.info(f"{ctx.author.name} has successfully been added to the database")
@@ -115,9 +116,9 @@ class Profile(commands.Cog):
     @commands.command(aliases=["register'nt"], help="Removes the author from the database")
     async def remove(self, ctx):
         logging.info(f"remove raised by {ctx.author.name}")
-        col_ref = dab.collection("users").document("collectionlist").get().get("array")
+        col_ref = dab.collection("users").document("collectionlist").get().get("users")
         col_ref.remove(str(ctx.author.id))
-        dab.collection("users").document("collectionlist").update({"array": col_ref})
+        dab.collection("users").document("collectionlist").update({"users": col_ref})
         dab.collection("users").document(str(ctx.author.id)).delete()
         await ctx.send("Successfully removed you from the database!")
         logging.info(f"{ctx.author.name} successfully removed from the database")

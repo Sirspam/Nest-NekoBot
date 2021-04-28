@@ -36,7 +36,7 @@ class Profile(commands.Cog):
         wins = ref.get("wins")
         loses = ref.get("loses")
         if rank == "Master":
-            if randint(0,100) == 0:
+            if randint(0,10) == 0:
                 badge_path = badge_directory+"//Crime.png"
             else:
                 badge_path = badge_directory+"//Master.png"
@@ -63,7 +63,7 @@ class Profile(commands.Cog):
     @commands.command(aliases=["link","add"], help="Registers the author to the database")
     async def register(self, ctx):
         logging.info(f"Recieved register {ctx.author.id}")
-        col_ref = dab.collection('users').document('collectionlist').get().get('users')
+        col_ref = dab.collection("users").document("collectionlist").get().get("users")
         if str(ctx.author.id) in col_ref:
             await ctx.reply("You're already in the database!")
             return logging.info("User already in database")
@@ -109,17 +109,40 @@ class Profile(commands.Cog):
         col_ref.append(str(ctx.author.id))
         col_ref.sort()
         dab.collection("users").document("collectionlist").update({"users": col_ref})
-        await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835882077298622465"))
+        if modded is True:
+            print("modded true")
+            list_ref = dab.collection("users").document("collectionlist").get().get("modded")
+            list_ref.append(str(ctx.author.id))
+            list_ref.sort()
+            dab.collection("users").document("collectionlist").update({"modded": list_ref})
+        elif modded is False:
+            print("modded false")
+            list_ref = dab.collection("users").document("collectionlist").get().get("quest")
+            list_ref.append(str(ctx.author.id))
+            list_ref.sort()
+            print(list_ref)
+            dab.collection("users").document("collectionlist").update({"quest": list_ref})
+        #await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835882077298622465"))
         await ctx.send(f"{ctx.author.name} has successfully registered!")
         logging.info(f"{ctx.author.name} has successfully been added to the database")
 
     @commands.command(aliases=["register'nt"], help="Removes the author from the database")
     async def remove(self, ctx):
         logging.info(f"remove raised by {ctx.author.name}")
+        modded = dab.collection("users").document(str(ctx.author.id)).get().get("modded")
         col_ref = dab.collection("users").document("collectionlist").get().get("users")
         col_ref.remove(str(ctx.author.id))
         dab.collection("users").document("collectionlist").update({"users": col_ref})
         dab.collection("users").document(str(ctx.author.id)).delete()
+        print(modded)
+        if modded is True:
+            col_ref = dab.collection("users").document("collectionlist").get().get("modded")
+            col_ref.remove(str(ctx.author.id))
+            dab.collection("users").document("collectionlist").update({"modded": col_ref})
+        elif modded is False:
+            col_ref = dab.collection("users").document("collectionlist").get().get("quest")
+            col_ref.remove(str(ctx.author.id))
+            dab.collection("users").document("collectionlist").update({"quest": col_ref})
         await ctx.send("Successfully removed you from the database!")
         logging.info(f"{ctx.author.name} successfully removed from the database")
 

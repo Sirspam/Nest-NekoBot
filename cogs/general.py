@@ -1,6 +1,8 @@
+import discord
 import logging
 from random import getrandbits
 from discord.ext import commands
+from io import BytesIO
 
 
 class General(commands.Cog):
@@ -22,6 +24,12 @@ class General(commands.Cog):
         logging.info("bsr invoked")
         await ctx.send("e970")
         logging.info("bsr ran")
+
+    @commands.command()
+    async def neko(self, ctx):
+        # Add a check to see if neko cog is loaded
+        async with self.bot.session.get("https://cdn.discordapp.com/emojis/786584088403509338.png") as resp:
+                await ctx.reply(file=discord.File(BytesIO(await resp.read()), "neko.png"))
 
 
 def setup(bot):

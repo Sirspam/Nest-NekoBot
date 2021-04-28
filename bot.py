@@ -2,6 +2,8 @@ import discord
 import os
 import logging
 import firebase_admin
+import aiohttp
+import asyncio
 from discord.ext import commands
 from firebase_admin import credentials
 from dotenv import load_dotenv
@@ -38,7 +40,8 @@ class EmbeddedHelp(commands.MinimalHelpCommand):
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix=os.getenv("PREFIX"), intents=intents, help_command=EmbeddedHelp(), case_insensitive=True, allowed_mentions=discord.AllowedMentions(replied_user=False))
-
+bot.session = aiohttp.ClientSession(loop=asyncio.get_event_loop(), headers={"User-Agent": "NestMultiRanking (https://discord.gg/zTCJh8H)"})
+bot.leaderboard = list()
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
@@ -47,6 +50,7 @@ initial_cogs = [
     "jishaku",
     "cogs.error_handler",
     "cogs.general",
+    #"cogs.leaderboard",
     "cogs.multi_ranking",
     "cogs.profile"
 ]

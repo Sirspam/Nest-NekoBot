@@ -4,19 +4,9 @@
 
 import discord
 import io
-import aiohttp
 import json
 import logging
 from discord.ext import commands
-
-async def image(self, link):
-    logging.info(f"image function ran with {link}")
-    async with aiohttp.ClientSession() as session:
-        async with session.get(link) as resp:
-            json_data = json.loads(await resp.text())
-            logging.info(json_data["url"])
-            async with session.get(json_data["url"]) as resp:
-                return io.BytesIO(await resp.read())
 
 
 class Neko(commands.Cog):
@@ -57,3 +47,11 @@ class Neko(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Neko(bot))
+
+async def image(self, link):
+    logging.info(f"image function ran with {link}")
+    async with self.bot.session.get(link) as resp:
+        json_data = json.loads(await resp.text())
+        logging.info(json_data["url"])
+        async with self.bot.session.get(json_data["url"]) as resp:
+            return io.BytesIO(await resp.read())

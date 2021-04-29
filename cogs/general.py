@@ -25,12 +25,6 @@ class General(commands.Cog):
         await ctx.send("e970")
         logging.info("bsr ran")
 
-    @commands.command()
-    async def neko(self, ctx):
-        # Add a check to see if neko cog is loaded
-        async with self.bot.session.get("https://cdn.discordapp.com/emojis/786584088403509338.png") as resp:
-                await ctx.reply(file=discord.File(BytesIO(await resp.read()), "neko.png"))
-
 
 def setup(bot):
     bot.add_cog(General(bot))

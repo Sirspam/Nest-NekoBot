@@ -43,7 +43,7 @@ class Profile(commands.Cog):
         else:
             badge_path = badge_directory+"//"+rank+".png"
         embed = discord.Embed(
-            description="",
+            description=f"**Modded**: {ref.get('modded')}",
             colour=await commands.ColourConverter().convert(ctx, "0x"+badge_colours[rank]),
             timestamp=ctx.message.created_at
             )
@@ -127,24 +127,25 @@ class Profile(commands.Cog):
         logging.info(f"{ctx.author.name} has successfully been added to the database")
 
     @commands.command(aliases=["register'nt"], help="Removes the author from the database")
-    async def remove(self, ctx):
-        logging.info(f"remove raised by {ctx.author.name}")
-        modded = dab.collection("users").document(str(ctx.author.id)).get().get("modded")
+    @commands.has_any_role(*[769117646280982538,587963873186021376])
+    async def remove(self, ctx, member:discord.Member):
+        logging.info(f"remove raised by {ctx.author.name}, {member.name} passed in")
+        modded = dab.collection("users").document(str(member.id)).get().get("modded")
         col_ref = dab.collection("users").document("collectionlist").get().get("users")
-        col_ref.remove(str(ctx.author.id))
+        col_ref.remove(str(member.id))
         dab.collection("users").document("collectionlist").update({"users": col_ref})
-        dab.collection("users").document(str(ctx.author.id)).delete()
+        dab.collection("users").document(str(member.id)).delete()
         print(modded)
         if modded is True:
             col_ref = dab.collection("users").document("collectionlist").get().get("modded")
-            col_ref.remove(str(ctx.author.id))
+            col_ref.remove(str(member.id))
             dab.collection("users").document("collectionlist").update({"modded": col_ref})
         elif modded is False:
             col_ref = dab.collection("users").document("collectionlist").get().get("quest")
-            col_ref.remove(str(ctx.author.id))
+            col_ref.remove(str(member.id))
             dab.collection("users").document("collectionlist").update({"quest": col_ref})
         await ctx.send("Successfully removed you from the database!")
-        logging.info(f"{ctx.author.name} successfully removed from the database")
+        logging.info(f"{member.name} successfully removed from the database")
 
 
 def setup(bot):

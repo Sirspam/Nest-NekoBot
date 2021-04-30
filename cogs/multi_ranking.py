@@ -121,7 +121,7 @@ class MultiRanking(commands.Cog):
         logging.info("rankings ended")
     
     @commands.command(help="Sets a user's MP value to the specified value")
-    @commands.has_permissions(administrator=True)
+    @commands.has_any_role(*[769117646280982538,587963873186021376])
     async def MPset(self, ctx, member:discord.Member, value):
         logging.info(f"MP set invoked by {ctx.author}, setting {member.name} MP to {value}")
         ctx.author = member
@@ -129,7 +129,7 @@ class MultiRanking(commands.Cog):
         await ranking_roles.assign_rank(ctx)
 
     @commands.command(help="Posts the current matches (debug)")
-    @commands.has_permissions(administrator=True)
+    @commands.has_any_role(*[769117646280982538,587963873186021376])
     async def matches(self, ctx):
         global matches
         await ctx.send(matches)

@@ -23,8 +23,6 @@ async def determine_rank(ctx):
             logging.info(f"returned {x}")
             return x
 
-
-
 async def assign_rank(ctx):
     logging.info("assign_rank invoked")
     dab = firestore.client()
@@ -45,3 +43,6 @@ async def rank_list():
         else:
             message = message+f"{rankings[x][3]} **{x}**: {rankings[x][0]} - {rankings[x][1]}\n"
     return message
+
+async def return_emote(emote):
+    return rankings[emote][3] # This module is basically acting as an awful database now lmao

@@ -120,7 +120,6 @@ class Leaderboard(commands.Cog):
         pages = list()
         message = str()
         for x in segregated_leaderboard:
-            print(x)
             if page_count == 15:
                 pages.append(message)
                 message = str()
@@ -132,6 +131,8 @@ class Leaderboard(commands.Cog):
             message = message+f"{x[2]} #{count} - ``{member.name}`` - MP: {x[1]}\n"
             count = count+1
             page_count = page_count+1
+        if pages == []:
+            pages.append(message)
         embed = discord.Embed(
             title = f"Nest Multi Ranking Leaderboard {title}",
             description = pages[0],
@@ -140,7 +141,6 @@ class Leaderboard(commands.Cog):
         )
         embed.set_thumbnail(url=(ctx.guild.get_member(int(segregated_leaderboard[0][0]))).avatar_url)
         await ctx.send(embed=embed)
-        print(pages)
 
     @commands.command(hidden=True, help="Generates the leaderboard from firebase (debug)")
     @commands.has_any_role(*[769117646280982538,587963873186021376])

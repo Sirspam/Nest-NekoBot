@@ -110,17 +110,14 @@ class Profile(commands.Cog):
         col_ref.sort()
         dab.collection("users").document("collectionlist").update({"users": col_ref})
         if modded is True:
-            print("modded true")
             list_ref = dab.collection("users").document("collectionlist").get().get("modded")
             list_ref.append(str(ctx.author.id))
             list_ref.sort()
             dab.collection("users").document("collectionlist").update({"modded": list_ref})
         elif modded is False:
-            print("modded false")
             list_ref = dab.collection("users").document("collectionlist").get().get("quest")
             list_ref.append(str(ctx.author.id))
             list_ref.sort()
-            print(list_ref)
             dab.collection("users").document("collectionlist").update({"quest": list_ref})
         #await ctx.author.add_roles(await commands.RoleConverter().convert(ctx, "835882077298622465"))
         await ctx.send(f"{ctx.author.name} has successfully registered!")
@@ -135,7 +132,6 @@ class Profile(commands.Cog):
         col_ref.remove(str(member.id))
         dab.collection("users").document("collectionlist").update({"users": col_ref})
         dab.collection("users").document(str(member.id)).delete()
-        print(modded)
         if modded is True:
             col_ref = dab.collection("users").document("collectionlist").get().get("modded")
             col_ref.remove(str(member.id))

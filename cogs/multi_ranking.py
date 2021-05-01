@@ -119,11 +119,8 @@ class MultiRanking(commands.Cog):
             count = 0
             for x in self.bot.leaderboard: # For the love of god please rewrite this at some point
                 if x[0]==(str(scores[0][1].id)):
-                    print("01")
                     self.bot.leaderboard[count] = (x[0],int(win_rep.get("MP"))+scores[0][0],await ranking_roles.return_emote(win_rank))
-                    print(self.bot.leaderboard[count])
                 if x[0]==(str(scores[1][1].id)):
-                    print("11")
                     self.bot.leaderboard[count] = (x[0],MPLoss,await ranking_roles.return_emote(loss_rank))
                 count = count + 1
             self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)

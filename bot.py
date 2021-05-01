@@ -50,7 +50,7 @@ initial_cogs = [
     "jishaku",
     "cogs.error_handler",
     "cogs.general",
-    #"cogs.leaderboard",
+    "cogs.leaderboard",
     "cogs.multi_ranking",
     "cogs.profile"
 ]

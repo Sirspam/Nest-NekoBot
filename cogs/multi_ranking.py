@@ -8,6 +8,7 @@ from utils import ranking_roles
 
 dab = firestore.client()
 matches = dict()
+active_participants = list()
 
 
 class MultiRanking(commands.Cog):
@@ -25,9 +26,12 @@ class MultiRanking(commands.Cog):
         if dab.collection("users").document(str(ctx.author.id)).get().get("modded") is not dab.collection("users").document(str(member.id)).get().get("modded"):
             await ctx.send("You can't start a match with someone on a different platform to you!")
             return logging.info("modded bools differeated, match cancelled")
-        if ctx.author.id in matches.keys():
+        if ctx.author.id in active_participants:
             await ctx.send("You've already got an open match!")
             return logging.info("author already has an open match, match cancelled")
+        if member.id in active_participants:
+            await ctx.send("You're already in an open match!")
+            return logging.info("member already in an open match, match cancalled")
         col_ref = dab.collection("users").document("collectionlist").get().get('users')
         if str(member.id) not in col_ref:
             return await ctx.send(f"{member.name} isn't registered!")
@@ -46,6 +50,8 @@ class MultiRanking(commands.Cog):
         else:
             if str(reaction.emoji) == "✅":
                 matches.update({ctx.author.id: (ctx.author,member)})
+                active_participants.append(ctx.author.id)
+                active_participants.append(member.id)
                 await ctx.send(f"{ctx.author.name} and {member.name}'s match has started!\nBegin playing in multiplayer! Play 3 maps, and who ever wins the most maps gets the most points")
                 logging.info(f"Match successfully started. Current matches: {matches}")
             elif str(reaction.emoji) == "❌":
@@ -82,12 +88,11 @@ class MultiRanking(commands.Cog):
                 scores.append([3, ctx.author])
         scores.append([(3-scores[0][0]),matches[ctx.author.id][1]])
         scores.sort(reverse=True)
-        print(scores)
-        message = await ctx.send(f"The score is **{scores[0][0]} - {scores[1][0]} to {scores[0][1].name}**\n{scores[1][1].mention} do you agree to this score?")
+        message = await ctx.send(f"The score is **{scores[0][0]} - {scores[1][0]} to {scores[0][1].name}**\n{matches[ctx.author.id][1].mention} do you agree to this score?")
         await message.add_reaction("✅")
         await message.add_reaction("❌")
         def validation_check(reaction, user):
-            return str(reaction.emoji) in ["✅","❌"] and user == scores[1][1]
+            return str(reaction.emoji) in ["✅","❌"] and user == matches[ctx.author.id][1]
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=validation_check, timeout=60)
         except asyncio.TimeoutError:
@@ -95,21 +100,36 @@ class MultiRanking(commands.Cog):
         if str(reaction.emoji) == "✅":
             await ctx.send(f"{scores[0][1].mention} wins and gains {scores[0][0]}MP! {scores[1][1].mention} loses {scores[0][0]}MP!")
             win_rep = dab.collection("users").document(str(scores[0][1].id)).get() # I hate this block of code
+            win_rank = await ranking_roles.determine_rank(ctx, int(win_rep.get("MP"))+scores[0][0])
             loss_rep = dab.collection("users").document(str(scores[1][1].id)).get()
             dab.collection("users").document(str(scores[0][1].id)).update({
                 "MP": (int(win_rep.get("MP"))+scores[0][0]),
-                "wins": (win_rep.get("wins")+1)
+                "wins": (win_rep.get("wins")+1),
+                "rank": win_rank
             })
             MPLoss = int(loss_rep.get("MP"))-scores[0][0]
             if MPLoss < 0:
                 MPLoss = 0
+            loss_rank = await ranking_roles.determine_rank(ctx, MPLoss)
             dab.collection("users").document(str(scores[1][1].id)).update({
                 "MP": MPLoss,
-                "loses": (loss_rep.get("loses")+1)    
+                "loses": (loss_rep.get("loses")+1),
+                "rank": loss_rank
             })
+            count = 0
+            for x in self.bot.leaderboard: # For the love of god please rewrite this at some point
+                if x[0]==(str(scores[0][1].id)):
+                    print("01")
+                    self.bot.leaderboard[count] = (x[0],int(win_rep.get("MP"))+scores[0][0],await ranking_roles.return_emote(win_rank))
+                    print(self.bot.leaderboard[count])
+                if x[0]==(str(scores[1][1].id)):
+                    print("11")
+                    self.bot.leaderboard[count] = (x[0],MPLoss,await ranking_roles.return_emote(loss_rank))
+                count = count + 1
+            self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
             del matches[ctx.author.id]
         if str(reaction.emoji) == "❌":
-            return await ctx.send(f"{scores[1][1].name} has declined this score. please redo the matchend process or contact a moderator")
+            return await ctx.send(f"{matches[ctx.author.id][1].name} has declined this score. please redo the matchend process or contact a moderator")
 
     @commands.command(help="Posts the requirements for each rank")
     async def rankings(self, ctx):
@@ -126,7 +146,13 @@ class MultiRanking(commands.Cog):
         logging.info(f"MP set invoked by {ctx.author}, setting {member.name} MP to {value}")
         ctx.author = member
         dab.collection("users").document(str(member.id)).update({"MP": value})
-        await ranking_roles.assign_rank(ctx)
+        count = 0
+        for x in self.bot.leaderboard: # For the love of god please rewrite this at some point
+            if x[0]==(str(member.id)):
+                self.bot.leaderboard[count] = (x[0],int(value),await ranking_roles.return_emote(await ranking_roles.determine_rank(ctx, int(value))))
+            count = count + 1
+        self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
+        await ranking_roles.assign_rank(ctx, int(value))
 
     @commands.command(help="Posts the current matches (debug)")
     @commands.has_any_role(*[769117646280982538,587963873186021376])

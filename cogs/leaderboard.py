@@ -148,8 +148,8 @@ class Leaderboard(commands.Cog):
         logging.info(f"generate_leaderboard invoked by {ctx.author.name}")
         async with ctx.channel.typing():
             await populate_leaderboard(self)
-            logging.info(self.bot.leaderboard)
-            await ctx.message.add_reaction("✅")
+        logging.info(self.bot.leaderboard)
+        await ctx.message.add_reaction("✅")
     
     @commands.Cog.listener()
     async def on_ready(self):

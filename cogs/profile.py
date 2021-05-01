@@ -144,8 +144,8 @@ class Profile(commands.Cog):
             col_ref = dab.collection("users").document("collectionlist").get().get("quest")
             col_ref.remove(str(member.id))
             dab.collection("users").document("collectionlist").update({"quest": col_ref})
-        await ctx.send("Successfully removed you from the database!")
-        logging.info(f"{member.name} successfully removed from the database")
+        await ctx.send(f"Successfully removed {member.id} from the database!")
+        logging.info(f"{member.name} successfully from the database")
 
 
 def setup(bot):

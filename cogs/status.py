@@ -15,7 +15,7 @@ class Status(commands.Cog):
     async def status(self):
         await self.bot.wait_until_ready()
         if getrandbits(1) == 1:
-            value = choice([
+            value = choice([ # Playing
                 "Beat Saber",
                 "Shiny Happy Days on loop",
                 "with Sirspam's final braincell",
@@ -27,7 +27,7 @@ class Status(commands.Cog):
             await self.bot.change_presence(activity=discord.Game(name=value))
             logging.info(f"Status set to: {value}")
         else:
-            value = choice([
+            value = choice([ # Watching
                 "Jaydz live on twitch",
                 "Bitz live on twitch :PeepoStare:",
                 "Sirspam live on twitch",

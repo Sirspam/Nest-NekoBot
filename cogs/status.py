@@ -19,7 +19,7 @@ class Status(commands.Cog):
                 "Beat Saber",
                 "Shiny Happy Days on loop",
                 "with Sirspam's final braincell",
-                f"with {self._bot.get_guild(587749898045095960).member_count}",
+                f"with {self.bot.get_guild(587749898045095960).member_count}",
                 "with nekos",
                 "with booba 😳",
                 "😎"

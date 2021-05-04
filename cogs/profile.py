@@ -48,8 +48,9 @@ class Profile(commands.Cog):
             timestamp=ctx.message.created_at
             )
         embed.set_author(name=ctx.author.name,icon_url=str(ctx.author.avatar_url))
-        embed.add_field(name="MultiPoints", value=ref.get("MP"), inline=False)
-        embed.add_field(name="Rank", value=rank, inline=False)
+        embed.add_field(name="MultiPoints", value=ref.get("MP"), inline=True)
+        embed.add_field(name="Rank", value=rank, inline=True)
+        embed.add_field(name="\u200b", value="\u200b", inline=True)
         embed.add_field(name="Wins", value=wins, inline=True)
         embed.add_field(name="Loses", value=loses, inline=True)
         try:

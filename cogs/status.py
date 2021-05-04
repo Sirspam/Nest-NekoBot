@@ -11,7 +11,7 @@ class Status(commands.Cog):
         self.bot = bot
         
 
-    @tasks.loop(hours=1)
+    @tasks.loop(minutes=30)
     async def status(self):
         await self.bot.wait_until_ready()
         if getrandbits(1) == 1:
@@ -29,10 +29,11 @@ class Status(commands.Cog):
         else:
             value = choice([ # Watching
                 "Jaydz live on twitch",
-                "Bitz live on twitch :PeepoStare:",
-                "Sirspam live on twitch",
-                "Soberra live on twitch",
-                "Sckuffles live on twitch",
+                "Bitz live on Twitch :PeepoStare:",
+                "Sirspam live on Twitch",
+                "Soberra live on Twitch",
+                "Sckuffles live on Twitch",
+                "SomeTallDude on YouTube",
                 "for .matchstart",
                 "You",
                 "Dan make a fool of himself",

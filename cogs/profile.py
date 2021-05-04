@@ -52,7 +52,7 @@ class Profile(commands.Cog):
         embed.add_field(name="Rank", value=rank, inline=True)
         embed.add_field(name="\u200b", value="\u200b", inline=True)
         embed.add_field(name="Wins", value=wins, inline=True)
-        embed.add_field(name="Loses", value=loses, inline=True)
+        embed.add_field(name="Losses", value=loses, inline=True)
         try:
             embed.add_field(name="WL Ratio", value=round(wins/loses,2), inline=True)
         except ZeroDivisionError:

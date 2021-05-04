@@ -52,7 +52,8 @@ initial_cogs = [
     "cogs.general",
     "cogs.leaderboard",
     "cogs.multi_ranking",
-    "cogs.profile"
+    "cogs.profile",
+    "cogs.status"
 ]
 
 for cog in initial_cogs:

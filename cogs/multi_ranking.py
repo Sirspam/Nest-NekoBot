@@ -128,7 +128,79 @@ class MultiRanking(commands.Cog):
         if str(reaction.emoji) == "❌":
             return await ctx.send(f"{matches[ctx.author.id][1].name} has declined this score. please redo the matchend process or contact a moderator")
 
-    @commands.command(help="Posts the requirements for each rank")
+    @commands.command()
+    @commands.has_any_role(*[769117646280982538,587963873186021376])
+    async def admin_matchend(self, ctx, match_owner:discord.Member):
+        logging.info(f"admin_matchend invoked by {ctx.author.name}. {match_owner.name} passed as match_owner")
+        global matches
+        if match_owner.id not in matches.keys():
+            return await ctx.send(f"{match_owner.name} doesn't have an open match")
+        total = 0
+        scores = list()
+        message = await ctx.send(f"How many maps did __{match_owner.name}__ you win?")
+        await message.add_reaction("0️⃣")
+        await message.add_reaction("1️⃣")
+        await message.add_reaction("2️⃣")
+        await message.add_reaction("3️⃣")
+        def val_check(reaction, user): # Me copy and pasting the code I stole from the discord.py server B)
+            return str(reaction.emoji) in ["0️⃣","1️⃣","2️⃣","3️⃣"] and user == ctx.author
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=val_check, timeout=60)
+        except asyncio.TimeoutError:
+            return await ctx.send(f"{ctx.author} didn't react in time! Please repeat the match end process")
+        else:
+            if str(reaction.emoji) == "0️⃣":
+                scores.append([0, match_owner])
+            if str(reaction.emoji) == "1️⃣":
+                scores.append([1, match_owner])
+            if str(reaction.emoji) == "2️⃣":
+                scores.append([2, match_owner])
+            if str(reaction.emoji) == "3️⃣":
+                scores.append([3, match_owner])
+        scores.append([(3-scores[0][0]),matches[match_owner.id][1]])
+        scores.sort(reverse=True)
+        message = await ctx.send(f"The score is **{scores[0][0]} - {scores[1][0]} to {scores[0][1].name}**\nIs this score correct?")
+        await message.add_reaction("✅")
+        await message.add_reaction("❌")
+        def validation_check(reaction, user):
+            return str(reaction.emoji) in ["✅","❌"] and user == ctx.author
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=validation_check, timeout=60)
+        except asyncio.TimeoutError:
+            return await ctx.send("You didn't respond in time!")
+        if str(reaction.emoji) == "✅":
+            await ctx.send(f"{scores[0][1].mention} wins and gains {scores[0][0]}MP! {scores[1][1].mention} loses {scores[0][0]}MP!")
+            win_rep = dab.collection("users").document(str(scores[0][1].id)).get() # I hate this block of code
+            win_rank = await ranking_roles.determine_rank(ctx, int(win_rep.get("MP"))+scores[0][0])
+            loss_rep = dab.collection("users").document(str(scores[1][1].id)).get()
+            dab.collection("users").document(str(scores[0][1].id)).update({
+                "MP": (int(win_rep.get("MP"))+scores[0][0]),
+                "wins": (win_rep.get("wins")+1),
+                "rank": win_rank
+            })
+            MPLoss = int(loss_rep.get("MP"))-scores[0][0]
+            if MPLoss < 0:
+                MPLoss = 0
+            loss_rank = await ranking_roles.determine_rank(ctx, MPLoss)
+            dab.collection("users").document(str(scores[1][1].id)).update({
+                "MP": MPLoss,
+                "loses": (loss_rep.get("loses")+1),
+                "rank": loss_rank
+            })
+            count = 0
+            for x in self.bot.leaderboard: # For the love of god please rewrite this at some point
+                if x[0]==(str(scores[0][1].id)):
+                    self.bot.leaderboard[count] = (x[0],int(win_rep.get("MP"))+scores[0][0],await ranking_roles.return_emote(win_rank))
+                if x[0]==(str(scores[1][1].id)):
+                    self.bot.leaderboard[count] = (x[0],MPLoss,await ranking_roles.return_emote(loss_rank))
+                count = count + 1
+            self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
+            del matches[match_owner.id]
+        if str(reaction.emoji) == "❌":
+            return await ctx.send(f"{matches[match_owner.id][1].name} has declined this score. please redo the matchend process or contact a moderator")
+
+    
+    @commands.command(help="Posts the requirements for each rank",aliases=["ranks"])
     async def rankings(self, ctx):
         logging.info("rankings invoked")
         await ctx.send(embed=discord.Embed(
@@ -150,6 +222,7 @@ class MultiRanking(commands.Cog):
             count = count + 1
         self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
         await ranking_roles.assign_rank(ctx, int(value))
+        await ctx.message.add_reaction("✅")
 
     @commands.command(help="Posts the current matches (debug)")
     @commands.has_any_role(*[769117646280982538,587963873186021376])

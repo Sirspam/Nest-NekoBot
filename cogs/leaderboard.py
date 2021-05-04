@@ -91,7 +91,7 @@ class Leaderboard(commands.Cog):
     #    type = "All"
     #    await LeaderboardMenu().start(ctx, wait=True)
     
-    @commands.command(help="Posts a leaderboard of the individiuals with the most MP\nValid arguments are ``all``, ``modded`` and ``quest``")
+    @commands.command(help="Posts a leaderboard of the individiuals with the most MP\nValid arguments are ``all``, ``modded`` and ``quest``",aliases=["lb"])
     async def leaderboard(self, ctx, type="all"):
         logging.info("leaderboard invoked")
         segregated_leaderboard = list()

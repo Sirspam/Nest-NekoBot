@@ -19,7 +19,10 @@ class Status(commands.Cog):
                 "Beat Saber",
                 "Shiny Happy Days on loop",
                 "with Sirspam's final braincell",
-                f"with {self.bot.guild_meber_count}"
+                f"with {self._bot.get_guild(587749898045095960).member_count}",
+                "with nekos",
+                "with booba 😳",
+                "😎"
             ])
             await self.bot.change_presence(activity=discord.Game(name=value))
             logging.info(f"Status set to: {value}")

@@ -47,7 +47,8 @@ class Status(commands.Cog):
                 "Monke on youtube",
                 "Skip skip skippety skip skip skip",
                 "Bitz suggest awful statuses",
-                "Mar fangirl over Jaydz"
+                "Mar fangirl over Jaydz",
+                "Pigeon waste her primogems"
             ])
             await self.bot.change_presence(activity=discord.Activity(name=value, type=discord.ActivityType.watching))
             logging.info(f"Status set to: {value}")

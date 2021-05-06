@@ -2,6 +2,7 @@ import discord
 import logging
 from random import getrandbits
 from random import choice
+from random import randint
 from discord.ext import commands
 from io import BytesIO
 
@@ -11,6 +12,15 @@ class General(commands.Cog):
         self.bot = bot
 
 
+    @commands.Cog.listener('on_message')
+    async def on_message(self, message):
+        if message.author == self.bot.user:
+            return
+        if message.content.lower() == "jaydz":
+            if randint(0, 10) == 0:
+                await message.reply("jaydeez nuts <a:Crime:831541168491331635>")
+                logging.info("Posted jaydeez nuts :tf:")
+    
     @commands.command(help="Flips a coin",aliases=["flip"])
     async def coin(self, ctx):
         logging.info("Coin invoked")

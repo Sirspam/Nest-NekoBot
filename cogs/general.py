@@ -16,8 +16,8 @@ class General(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
-        if message.content.lower() == "jaydz":
-            if randint(0, 10) == 0:
+        if "jaydz" in message.content.lower():
+            if randint(0, 5) == 0:
                 await message.reply("jaydeez nuts <a:Crime:831541168491331635>")
                 logging.info("Posted jaydeez nuts :tf:")
     

@@ -31,7 +31,17 @@ class General(commands.Cog):
         # Hmm yes, hard corded database B)
         async with self.bot.session.get(choice(["https://cdn.discordapp.com/emojis/786584088403509338.png",
         "https://cdn.discordapp.com/attachments/587749898729029648/839806693621760000/Untitled138_20210505215431.png",
-        "https://cdn.discordapp.com/attachments/587749898729029648/839807192601198602/Untitled138_20210505210112.png"])) as resp:
+        "https://cdn.discordapp.com/attachments/587749898729029648/839807192601198602/Untitled138_20210505210112.png",
+        "https://media.discordapp.net/attachments/734485591248338954/736429296830119946/nug.png",
+        "https://media.discordapp.net/attachments/734485591248338954/736687338822041670/unknown.png",
+        "https://media.discordapp.net/attachments/734485591248338954/734932336789028935/nugdog.png",
+        "https://media.discordapp.net/attachments/734485591248338954/734810660386635816/doggo.jpeg",
+        "https://media.discordapp.net/attachments/734485591248338954/734732953263013948/unknown.png?",
+        "https://media.discordapp.net/attachments/734485591248338954/734539889269538877/unknown.png",
+        "https://media.discordapp.net/attachments/734485591248338954/734506492140585010/chickn.png",
+        "https://media.discordapp.net/attachments/734485591248338954/734501737905389658/nug_dog.png",
+        "https://media.discordapp.net/attachments/734485591248338954/734492811935744080/unknown.png",
+        "https://media.discordapp.net/attachments/734485591248338954/734899965821845685/bigjaydz.jpg"])) as resp:
                 await ctx.reply(file=discord.File(BytesIO(await resp.read()), "cute_kawaii_neko.png"))
 
 def setup(bot):

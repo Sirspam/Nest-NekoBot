@@ -17,8 +17,8 @@ class General(commands.Cog):
         if message.author == self.bot.user:
             return
         if "jaydz" in message.content.lower():
-            if randint(0, 5) == 0:
-                await message.reply("jaydeez nuts <a:Crime:831541168491331635>")
+            if randint(0, 9) == 0:
+                await message.reply("jaydeez nuts <:Jaydz1Tf:840275619325673553>")
                 logging.info("Posted jaydeez nuts :tf:")
     
     @commands.command(help="Flips a coin",aliases=["flip"])
@@ -51,7 +51,10 @@ class General(commands.Cog):
         "https://media.discordapp.net/attachments/734485591248338954/734506492140585010/chickn.png",
         "https://media.discordapp.net/attachments/734485591248338954/734501737905389658/nug_dog.png",
         "https://media.discordapp.net/attachments/734485591248338954/734492811935744080/unknown.png",
-        "https://media.discordapp.net/attachments/734485591248338954/734899965821845685/bigjaydz.jpg"])) as resp:
+        "https://media.discordapp.net/attachments/734485591248338954/734899965821845685/bigjaydz.jpg",
+        "https://media.discordapp.net/attachments/587749898729029648/840017181063905300/Untitled139_20210506071635.png",
+        "https://media.discordapp.net/attachments/734485591248338954/736930199593287701/Becoom_nugdog.png",
+        "https://media.discordapp.net/attachments/734485591248338954/735002105248612432/unknown-55.png"])) as resp:
                 await ctx.reply(file=discord.File(BytesIO(await resp.read()), "cute_kawaii_neko.png"))
 
 def setup(bot):

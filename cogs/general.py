@@ -20,6 +20,8 @@ class General(commands.Cog):
             if randint(0, 9) == 0:
                 await message.reply("jaydeez nuts <:Jaydz1Tf:840275619325673553>")
                 logging.info("Posted jaydeez nuts :tf:")
+        if "retard" in message.content.lower() and message.author.id == 232574143818760192: # I keep saying retard and jaydz doesn't like it :()
+            await message.reply("Sirspam you absolute buffoon you cannot say that forbidden word >:((")
     
     @commands.command(help="Flips a coin",aliases=["flip"])
     async def coin(self, ctx):

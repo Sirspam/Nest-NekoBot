@@ -17,7 +17,7 @@ class General(commands.Cog):
         if message.author == self.bot.user:
             return
         if "jaydz" in message.content.lower():
-            if randint(0, 9) == 0:
+            if randint(0, 4) == 0:
                 await message.reply("jaydeez nuts <:Jaydz1Tf:840275619325673553>")
                 logging.info("Posted jaydeez nuts :tf:")
         if "retard" in message.content.lower() and message.author.id == 232574143818760192: # I keep saying retard and jaydz doesn't like it :(

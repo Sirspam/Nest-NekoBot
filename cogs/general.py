@@ -20,8 +20,11 @@ class General(commands.Cog):
             if randint(0, 9) == 0:
                 await message.reply("jaydeez nuts <:Jaydz1Tf:840275619325673553>")
                 logging.info("Posted jaydeez nuts :tf:")
-        if "retard" in message.content.lower() and message.author.id == 232574143818760192: # I keep saying retard and jaydz doesn't like it :()
-            await message.reply("Sirspam you absolute buffoon you cannot say that forbidden word >:((")
+        if "retard" in message.content.lower() and message.author.id == 232574143818760192: # I keep saying retard and jaydz doesn't like it :(
+            await message.delete()
+            if "retarded" in message.content.lower():
+                message.content = message.content.replace('retarded','silly')
+            await message.channel.send(f"{message.content.replace('retard','silly')}\n``My super silly developer said the forbidden word, so I fixed it for him :)``")
     
     @commands.command(help="Flips a coin",aliases=["flip"])
     async def coin(self, ctx):

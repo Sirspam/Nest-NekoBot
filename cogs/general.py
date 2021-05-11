@@ -59,7 +59,9 @@ class General(commands.Cog):
         "https://media.discordapp.net/attachments/734485591248338954/734899965821845685/bigjaydz.jpg",
         "https://media.discordapp.net/attachments/587749898729029648/840017181063905300/Untitled139_20210506071635.png",
         "https://media.discordapp.net/attachments/734485591248338954/736930199593287701/Becoom_nugdog.png",
-        "https://media.discordapp.net/attachments/734485591248338954/735002105248612432/unknown-55.png"])) as resp:
+        "https://media.discordapp.net/attachments/734485591248338954/735002105248612432/unknown-55.png",
+        "https://cdn.discordapp.com/attachments/644475427770859530/841766393406029834/Untitled145.png",
+        "https://cdn.discordapp.com/attachments/644475427770859530/841766777080119356/Untitled144_20210509233227.png"])) as resp:
                 await ctx.reply(file=discord.File(BytesIO(await resp.read()), "cute_kawaii_neko.png"))
 
 def setup(bot):

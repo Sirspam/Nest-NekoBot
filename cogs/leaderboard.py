@@ -148,8 +148,21 @@ class Leaderboard(commands.Cog):
         logging.info(f"generate_leaderboard invoked by {ctx.author.name}")
         async with ctx.channel.typing():
             await populate_leaderboard(self)
+            await ctx.message.add_reaction("✅")
         logging.info(self.bot.leaderboard)
-        await ctx.message.add_reaction("✅")
+
+    @commands.command(hidden=True, help="Generates the leaderboard from firebase (debug)")
+    @commands.has_any_role(*[769117646280982538,587963873186021376])
+    async def clean_database(self, ctx):
+        logging.info(f"clean_database invoked by {ctx.author.name}")
+        async with ctx.channel.typing():
+            await clean_database(self, ctx)
+            await ctx.message.add_reaction("✅")
+        logging.info("clean_database concluded")
+
+    @commands.Cog.listener()
+    async def on_member_remove(member):
+        await clean_database
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -171,3 +184,22 @@ async def populate_leaderboard(self):
     self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
     logging.info("populate_leaderboard concluded")
     
+async def clean_database(self, ctx):
+    logging.info("clean_database invoked")
+    ref = dab.collection("users").document("collectionlist").get().get("users")
+    modded_ref = dab.collection("users").document("collectionlist").get().get("modded")
+    quest_ref = dab.collection("users").document("collectionlist").get().get("quest")
+    for x in ref:
+        print(x)
+        if ctx.guild.get_member(int(x)) is None:
+            ref.remove(x)
+            dab.collection("users").document(str(x)).delete()
+            if str(x) in modded_ref:
+                modded_ref.remove(x)
+            elif str(x) in quest_ref:
+                quest_ref.remove(x)
+    dab.collection("users").document("collectionlist").update({"users": ref})
+    dab.collection("users").document("collectionlist").update({"modded": modded_ref})
+    dab.collection("users").document("collectionlist").update({"quest": quest_ref})
+    logging.info("clean_database concluded")
+    await populate_leaderboard(self)

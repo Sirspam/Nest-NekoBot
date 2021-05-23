@@ -17,6 +17,7 @@ class General(commands.Cog):
         if message.author == self.bot.user:
             return
         if "jaydz" in message.content.lower():
+            return # utter sadness
             if randint(0, 9) == 0:
                 await message.reply("jaydeez nuts <:Jaydz1Tf:840275619325673553>")
                 logging.info("Posted jaydeez nuts :tf:")

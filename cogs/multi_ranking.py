@@ -50,8 +50,8 @@ class MultiRanking(commands.Cog):
         else:
             if str(reaction.emoji) == "✅":
                 matches.update({ctx.author.id: (ctx.author,member)})
-                active_participants.append(ctx.author.id)
-                active_participants.append(member.id)
+                active_participants.append(ctx.author)
+                active_participants.append(member)
                 await ctx.send(f"{ctx.author.name} and {member.name}'s match has started!\nBegin playing in multiplayer! Play 3 maps, and who ever wins the most maps gets the most points")
                 logging.info(f"Match successfully started. Current matches: {matches}")
             elif str(reaction.emoji) == "❌":
@@ -64,7 +64,6 @@ class MultiRanking(commands.Cog):
         global matches
         if ctx.author.id not in matches.keys():
             return await ctx.send("You don't have an open match!")
-        total = 0
         scores = list()
         message = await ctx.send(f"{ctx.author.mention} How many maps did you win?")
         await message.add_reaction("0️⃣")
@@ -124,6 +123,8 @@ class MultiRanking(commands.Cog):
                     self.bot.leaderboard[count] = (x[0],MPLoss,await ranking_roles.return_emote(loss_rank))
                 count = count + 1
             self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
+            for x in matches[ctx.author.id]:
+                del active_participants[x]
             del matches[ctx.author.id]
         if str(reaction.emoji) == "❌":
             return await ctx.send(f"{matches[ctx.author.id][1].name} has declined this score. please redo the matchend process or contact a moderator")
@@ -227,8 +228,8 @@ class MultiRanking(commands.Cog):
     @commands.command(help="Posts the current matches (debug)")
     @commands.has_any_role(*[769117646280982538,587963873186021376])
     async def matches(self, ctx):
-        global matches
-        await ctx.send(matches)
+        global matches, active_participants
+        await ctx.send(f"matches: {matches}\nactive_participants: {active_participants}")
 
 
 def setup(bot):

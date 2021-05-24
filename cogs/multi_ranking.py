@@ -124,7 +124,7 @@ class MultiRanking(commands.Cog):
                 count = count + 1
             self.bot.leaderboard.sort(key=lambda a: a[1], reverse=True)
             for x in matches[ctx.author.id]:
-                del active_participants[x]
+                active_participants.remove(x)
             del matches[ctx.author.id]
         if str(reaction.emoji) == "❌":
             return await ctx.send(f"{matches[ctx.author.id][1].name} has declined this score. please redo the matchend process or contact a moderator")

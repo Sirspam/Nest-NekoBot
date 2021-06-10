@@ -52,8 +52,8 @@ class ErrorHandler(commands.Cog):
 
         logging.error(error)
         await ctx.send(embed=Embed(
-            title="Uh oh, Something bad happened <:NotLikeAqua:822089498866221076>",
-            description=f"An unhandled error occured.\nIf this keeps occuring open an [issue report](https://github.com/Sirspam/Sirbot/issues) or go pester Sirspam <:AquaSmile:845802697474441236>\n\n```{error}```",
+            title="Uh oh, Something bad happened",
+            description=f"An unhandled error occured.\nIf this keeps occuring go pester Sirspam <:tf:808417609732849664>\n\n```{error}```",
             colour=Colour.red()
         ))
         return await self.bot.get_channel(641750796781879307).send(embed=Embed(

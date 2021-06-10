@@ -2,3 +2,4 @@ discord.py==1.7.2
 python-dotenv==0.17.1
 jishaku==2.0.0
 firebase-admin==5.0.0
+git+https://github.com/Rapptz/discord-ext-menus

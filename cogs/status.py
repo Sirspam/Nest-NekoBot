@@ -1,9 +1,7 @@
 import discord
 import logging
-from discord.ext import commands
-from discord.ext import tasks
-from random import choice
-from random import getrandbits
+from discord.ext import commands, tasks
+from random import choice, getrandbits
 
 
 class Status(commands.Cog):
@@ -19,7 +17,7 @@ class Status(commands.Cog):
                 "Beat Saber",
                 "Shiny Happy Days on loop",
                 "with Sirspam's final braincell",
-                f"with {self.bot.get_guild(587749898045095960).member_count}",
+                f"with {self.bot.get_guild(587749898045095960).member_count} people",
                 "with nekos",
                 "with booba 😳",
                 "😎"

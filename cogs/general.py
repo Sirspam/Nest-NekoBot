@@ -1,10 +1,10 @@
-import discord
 import logging
-from random import getrandbits
-from random import choice
-from random import randint
-from discord.ext import commands
+from random import choice, randint
 from io import BytesIO
+
+from discord import File
+
+from discord.ext import commands
 
 
 class General(commands.Cog):
@@ -21,31 +21,12 @@ class General(commands.Cog):
             if randint(0, 9) == 0:
                 await message.reply("jaydeez nuts <:Jaydz1Tf:840275619325673553>")
                 logging.info("Posted jaydeez nuts :tf:")
-        if "retard" in message.content.lower() and message.author.id == 232574143818760192: # I keep saying retard and jaydz doesn't like it :(
-            await message.delete()
-            if "retarded" in message.content.lower():
-                message.content = message.content.replace('retarded','silly')
-            await message.channel.send(f"{message.content.replace('retard','silly')}\n``My super silly developer said the forbidden word, so I fixed it for him :)``")
-    
-    @commands.command(help="Flips a coin",aliases=["flip"])
-    async def coin(self, ctx):
-        logging.info("Coin invoked")
-        if getrandbits(1) == 1:
-            await ctx.reply("Heads")
-        else:
-            await ctx.reply("Tails")
-        logging.info("Coin ended")
-
-    @commands.command(help="Generates a random bsr key (WIP)")
-    async def bsr(self, ctx):
-        logging.info("bsr invoked")
-        await ctx.send("e970")
-        logging.info("bsr ran")
 
     @commands.command(hidden=True)
     async def neko(self, ctx):
         # Hmm yes, hard corded database B)
-        async with self.bot.session.get(choice(["https://cdn.discordapp.com/emojis/786584088403509338.png",
+        async with self.bot.session.get(choice([
+        "https://cdn.discordapp.com/emojis/786584088403509338.png",
         "https://cdn.discordapp.com/attachments/587749898729029648/839806693621760000/Untitled138_20210505215431.png",
         "https://cdn.discordapp.com/attachments/587749898729029648/839807192601198602/Untitled138_20210505210112.png",
         "https://media.discordapp.net/attachments/734485591248338954/736429296830119946/nug.png",
@@ -62,8 +43,9 @@ class General(commands.Cog):
         "https://media.discordapp.net/attachments/734485591248338954/736930199593287701/Becoom_nugdog.png",
         "https://media.discordapp.net/attachments/734485591248338954/735002105248612432/unknown-55.png",
         "https://cdn.discordapp.com/attachments/644475427770859530/841766393406029834/Untitled145.png",
-        "https://cdn.discordapp.com/attachments/644475427770859530/841766777080119356/Untitled144_20210509233227.png"])) as resp:
-                await ctx.reply(file=discord.File(BytesIO(await resp.read()), "cute_kawaii_neko.png"))
+        "https://cdn.discordapp.com/attachments/644475427770859530/841766777080119356/Untitled144_20210509233227.png"
+        ])) as resp:
+                await ctx.reply(file=File(BytesIO(await resp.read()), "cute_kawaii_neko.png"))
 
 def setup(bot):
     bot.add_cog(General(bot))

@@ -1,5 +1,5 @@
 import logging
-from random import choice, randint
+from random import choice
 from io import BytesIO
 
 from discord import File
@@ -20,7 +20,7 @@ class General(commands.Cog):
             logging.info("Reacted to announcement message :tf:")
             await message.add_reaction("<:tf:808417609732849664>")
 
-    @commands.command(hidden=True)
+    @commands.command()
     async def neko(self, ctx):
         # Hmm yes, hard corded database B)
         async with self.bot.session.get(choice([
@@ -44,6 +44,12 @@ class General(commands.Cog):
         "https://cdn.discordapp.com/attachments/644475427770859530/841766777080119356/Untitled144_20210509233227.png"
         ])) as resp:
                 await ctx.reply(file=File(BytesIO(await resp.read()), "cute_kawaii_neko.png"))
+
+    @commands.command()
+    async def wanker(self, ctx):
+        async with self.bot.session.get("https://cdn.discordapp.com/attachments/641750796781879307/779705559800610826/bug_off_wanker.png") as resp:
+            await ctx.reply(file=File(BytesIO(await resp.read()), "bog_off_wanker.png"))
+
 
 def setup(bot):
     bot.add_cog(General(bot))

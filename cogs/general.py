@@ -2,7 +2,6 @@ import logging
 from re import findall
 from random import choice
 from io import BytesIO
-from functools import partial
 
 from discord import File
 
@@ -11,10 +10,7 @@ from discord.ext import commands
 
 
 async def permitted_roles_check(ctx):
-    if ctx.author.guild_permissions.administrator is True:
-        return True
-    getter = partial(get, ctx.author.roles)
-    if any(getter(id=item) is not None if isinstance(item, int) else getter(name=item) is not None for item in 232574143818760192):
+    if ctx.author.guild_permissions.administrator or get(ctx.author.roles, id=587963873186021376):
         return True
     return False
 
@@ -32,7 +28,7 @@ class General(commands.Cog):
             logging.info(f"Deleting message in #self-promo by {message.author.name}:\n{message.content}")
             await message.delete()
             async with self.bot.session.get("https://cdn.discordapp.com/attachments/641750796781879307/779705559800610826/bug_off_wanker.png") as resp:
-                await message.author.send(file=File(BytesIO(await resp.read()), "bog_off_wanker.png"))
+                await message.author.send("No discussion in self-promo :tf:", file=File(BytesIO(await resp.read()), "bog_off_wanker.png"))
         # Announcements
         if message.channel.id == 588471682570649641:
             logging.info("Reacted to announcement message :tf:")

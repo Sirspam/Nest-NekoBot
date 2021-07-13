@@ -1,11 +1,22 @@
 import logging
+from re import findall
 from random import choice
 from io import BytesIO
+from functools import partial
 
 from discord import File
 
+from discord.utils import get
 from discord.ext import commands
 
+
+async def permitted_roles_check(ctx):
+    if ctx.author.guild_permissions.administrator is True:
+        return True
+    getter = partial(get, ctx.author.roles)
+    if any(getter(id=item) is not None if isinstance(item, int) else getter(name=item) is not None for item in 232574143818760192):
+        return True
+    return False
 
 class General(commands.Cog):
     def __init__(self, bot):
@@ -14,8 +25,15 @@ class General(commands.Cog):
 
     @commands.Cog.listener('on_message')
     async def on_message(self, message):
-        if message.author == self.bot.user:
+        if message.author.bot is True:
             return
+         # Self-promo
+        if message.channel.id == 587966826856841226 and not findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",message.content) and not await permitted_roles_check(await self.bot.get_context(message)):
+            logging.info(f"Deleting message in #self-promo by {message.author.name}:\n{message.content}")
+            await message.delete()
+            async with self.bot.session.get("https://cdn.discordapp.com/attachments/641750796781879307/779705559800610826/bug_off_wanker.png") as resp:
+                await message.author.send(file=File(BytesIO(await resp.read()), "bog_off_wanker.png"))
+        # Announcements
         if message.channel.id == 588471682570649641:
             logging.info("Reacted to announcement message :tf:")
             await message.add_reaction("<:tf:808417609732849664>")

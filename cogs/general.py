@@ -1,5 +1,4 @@
 import logging
-from re import findall
 from random import choice
 from io import BytesIO
 
@@ -21,14 +20,6 @@ class General(commands.Cog):
 
     @commands.Cog.listener('on_message')
     async def on_message(self, message):
-        if message.author.bot is True:
-            return
-         # Self-promo
-        if message.channel.id == 587966826856841226 and not findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",message.content) and not await permitted_roles_check(await self.bot.get_context(message)):
-            logging.info(f"Deleting message in #self-promo by {message.author.name}:\n{message.content}")
-            await message.delete()
-            async with self.bot.session.get("https://cdn.discordapp.com/attachments/641750796781879307/779705559800610826/bug_off_wanker.png") as resp:
-                await message.author.send("No discussion in self-promo :tf:", file=File(BytesIO(await resp.read()), "bog_off_wanker.png"))
         # Announcements
         if message.channel.id == 588471682570649641:
             logging.info("Reacted to announcement message :tf:")
@@ -36,7 +27,7 @@ class General(commands.Cog):
 
     @commands.command()
     async def neko(self, ctx):
-        # Hmm yes, hard corded database B)
+        # Hmm yes, hard corded image database B)
         async with self.bot.session.get(choice([
         "https://cdn.discordapp.com/emojis/786584088403509338.png",
         "https://cdn.discordapp.com/attachments/587749898729029648/839806693621760000/Untitled138_20210505215431.png",
@@ -61,8 +52,7 @@ class General(commands.Cog):
 
     @commands.command()
     async def wanker(self, ctx):
-        async with self.bot.session.get("https://cdn.discordapp.com/attachments/641750796781879307/779705559800610826/bug_off_wanker.png") as resp:
-            await ctx.reply(file=File(BytesIO(await resp.read()), "bog_off_wanker.png"))
+        await ctx.reply(file=File(self.bot.cwd+"/assets/bog_off_wanker.png"))
 
 
 def setup(bot):

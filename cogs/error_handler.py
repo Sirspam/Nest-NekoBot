@@ -5,6 +5,7 @@ from asyncio import sleep
 from discord import Embed, Colour
 
 from discord.ext import commands
+from utils.logger import log_error
 
 
 class ErrorHandler(commands.Cog):
@@ -56,11 +57,7 @@ class ErrorHandler(commands.Cog):
             description=f"An unhandled error occured.\nIf this keeps occuring go pester Sirspam <:peeposmile:798959766683779132>\n\n```{error}```",
             colour=Colour.red()
         ))
-        return await self.bot.get_channel(841306797985234954).send(embed=Embed(
-            title=f"{ctx.command} in {ctx.guild.name}",
-            description=f"{ctx.guild.id}\n**Message Content**```{ctx.message.content}```\n**Error**```{error}```",
-            colour=Colour.red()
-        ))
+        return await log_error(self, (f"{ctx.command} in {ctx.channel.name}",f"**Message Content**```{ctx.message.content}```\n**Error**```{error}```"))
 
 
 def setup(bot):

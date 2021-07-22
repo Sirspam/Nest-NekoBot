@@ -28,13 +28,13 @@ class Moderation(commands.Cog):
     @moderator_check()
     async def ban(self, ctx, user:User, *, reason):
         logging.info(f"Banning {user.name} for '{reason}' by {ctx.author.name}")
-        await ctx.guild.ban(user, reason=reason)
         await user.send(embed=Embed(
             title=f"You've been banned from {ctx.guild.name}",
             description=f"{reason}\n\n[Click here to make an unban request](https://forms.gle/zYVHijTdzBU6itX46 )",
             timestamp=datetime.utcnow(),
             colour=Colour.red()
         ), file=File(self.bot.cwd+"/assets/bog_off_wanker.png"))
+        await ctx.guild.ban(user, reason=reason)
         await ctx.reply(f"Bogged off the wanker :tf:\n``banned {user.name}``")
         await log_info(self, (f"Banned {ctx.user}",f"Banned by {ctx.author.name} for {reason}"))
 

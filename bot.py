@@ -32,6 +32,7 @@ bot.cwd = cwd
 
 initial_cogs = [
     "jishaku",
+    "cogs.beatsaver",
     "cogs.error_handler",
     "cogs.general",
     "cogs.moderation",
@@ -49,7 +50,7 @@ for cog in initial_cogs:
 @bot.event
 async def on_ready():
     bot.logger_channel = bot.get_channel(864913000284422144)
-    bot.session = ClientSession(loop=get_event_loop(), headers={"User-Agent": "NestMultiRanking (https://discord.gg/zTCJh8H)"})
+    bot.session = ClientSession(loop=get_event_loop(), headers={"User-Agent": getenv("USER_AGENT")})
     logging.info(f"Bot has successfully launched as {bot.user}")
 
 @bot.before_invoke

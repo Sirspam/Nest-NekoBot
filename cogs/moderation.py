@@ -26,8 +26,10 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @moderator_check()
-    async def ban(self, ctx, user:User, *, reason):
+    async def ban(self, ctx, user:User, *, reason = None):
         logging.info(f"Banning {user.name} for '{reason}' by {ctx.author.name}")
+        if reason is None:
+            reason = "No reason was given"
         await user.send(embed=Embed(
             title=f"You've been banned from {ctx.guild.name}",
             description=f"{reason}\n\n[Click here to make an unban request](https://forms.gle/zYVHijTdzBU6itX46 )",

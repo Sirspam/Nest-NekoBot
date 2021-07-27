@@ -37,8 +37,8 @@ class Moderation(commands.Cog):
             colour=Colour.red()
         ), file=File(self.bot.cwd+"/assets/bog_off_wanker.png"))
         await ctx.guild.ban(user, reason=reason)
-        await ctx.reply(f"Bogged off the wanker :tf:\n``banned {user.name}``")
-        await log_info(self, (f"Banned {ctx.user}",f"Banned by {ctx.author.name} for {reason}"))
+        await ctx.message.add_reaction("✅")
+        await log_info(self, (f"Banned {user.name}",f"Banned by {ctx.author.name} for {reason}"))
 
 def setup(bot):
     bot.add_cog(Moderation(bot))

@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 from utils import jskp
 
 
-logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s:%(levelname)s:%(name)s: %(message)s', level=logging.INFO)
 
 cwd = getcwd()
 load_dotenv(f"{cwd}/.env")
@@ -29,12 +29,21 @@ bot = Bot(
     )
 )
 bot.cwd = cwd
+bot.default_prefix = getenv("DEFAULT_PREFIX")
+bot.github_repo = getenv("GITHUB_REPO_URL")
+try:
+    bot.logging_channel_id = int(getenv("LOGGING_CHANNEL_ID"))
+except TypeError:
+    bot.logging_channel_id = None
 
 initial_cogs = [
     "jishaku",
     "cogs.beatsaver",
     "cogs.error_handler",
-    "cogs.general",
+    "cogs.fun",
+    "cogs.help",
+    "cogs.information",
+    "cogs.listeners",
     "cogs.moderation",
     "cogs.status"
 ]
@@ -47,16 +56,17 @@ for cog in initial_cogs:
         logging.error(f"Failed to load cog {cog}: {e}")
 
 
-@bot.event
-async def on_ready():
-    bot.logger_channel = bot.get_channel(864913000284422144)
+async def startup():
+    await bot.wait_until_ready()
     bot.session = ClientSession(loop=get_event_loop(), headers={"User-Agent": getenv("USER_AGENT")})
-    logging.info(f"Bot has successfully launched as {bot.user}")
+    bot.owner_id = (await bot.application_info()).owner.id
+
+bot.loop.create_task(startup())
+
 
 @bot.before_invoke
 async def before_invoke(ctx):
-    logging.info(f"Invoked {ctx.command} in {ctx.guild.name} by {ctx.author.name}\nArgs: {ctx.args}")
-
+    logging.info(f"Invoked {ctx.command} in {ctx.guild.name} by {ctx.author.name} ({ctx.message.content})" )
 @bot.after_invoke
 async def after_invoke(ctx):
     logging.info(f"Concluded {ctx.command}")

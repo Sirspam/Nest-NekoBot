@@ -10,6 +10,7 @@ from utils.logger import log_info
 
 
 class Moderation(commands.Cog):
+    "General Moderation Commands"
     def __init__(self, bot):
         self.bot = bot
 
@@ -24,7 +25,7 @@ class Moderation(commands.Cog):
             await message.author.send("No discussion in self-promo :tf:", file=File(self.bot.cwd+"/assets/bog_off_wanker.png"))
             await log_info(self, ("Deleted message in #self-promo",f"{message.author.name}:\n{message.content}"))
 
-    @commands.command()
+    @commands.command(help="Bans a user")
     @moderator_check()
     async def ban(self, ctx, user:User, *, reason = None):
         logging.info(f"Banning {user.name} for '{reason}' by {ctx.author.name}")

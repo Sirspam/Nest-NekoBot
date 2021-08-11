@@ -4,7 +4,6 @@ from os import listdir
 
 from discord import File
 
-from os.path import splitext
 from discord.utils import get
 from discord.ext import commands
 
@@ -31,7 +30,8 @@ class Fun(commands.Cog):
 
     @commands.command(aliases=["nya"], help="Posts a kawaii ~~nug dog~~ neko")
     async def neko(self, ctx):
-        attachment_path = self.bot.cwd+"//assets//nekos"
+        return await ctx.reply(file=File(self.bot.cwd+"//assets//nekos//birthday.png", f"hap_birth_jaydz.png"))
+        attachment_path = self.bot.cwd+"//assets//nekos//birthday"
         attachment_name = choice(listdir(attachment_path))
         attachment_path += "//" + attachment_name
         await ctx.reply(file=File(attachment_path, f"kawaii_neko_{attachment_name}"))

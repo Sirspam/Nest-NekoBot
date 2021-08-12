@@ -21,10 +21,6 @@ class Fun(commands.Cog):
 
     @commands.Cog.listener('on_message')
     async def on_message(self, message):
-        # Announcements
-        if message.channel.id == 588471682570649641:
-            logging.info("Reacted to announcement message :tf:")
-            await message.add_reaction("<:tf:808417609732849664>")
         if message.content == "<@!835514928357441556> my beloved":
             await message.reply(file=File(self.bot.cwd+"//assets//nekobot_my_beloved.gif"))
 

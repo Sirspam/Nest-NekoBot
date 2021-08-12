@@ -30,7 +30,6 @@ class Fun(commands.Cog):
 
     @commands.command(aliases=["nya"], help="Posts a kawaii ~~nug dog~~ neko")
     async def neko(self, ctx):
-        return await ctx.reply(file=File(self.bot.cwd+"//assets//nekos//birthday.png", f"hap_birth_jaydz.png"))
         attachment_path = self.bot.cwd+"//assets//nekos//birthday"
         attachment_name = choice(listdir(attachment_path))
         attachment_path += "//" + attachment_name
